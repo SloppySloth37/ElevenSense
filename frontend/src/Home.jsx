@@ -1,57 +1,64 @@
+// frontend/src/Home.jsx
+import React from "react";
 import { Link } from "react-router-dom";
+import { Zap, RefreshCw, Brain } from "lucide-react";
+
 import TextType from "./components/TextType";
 import LiquidEther from "./components/LiquidEther";
-import ScrollFloat from "./components/ScrollFloat";
-import ScrollStack, { ScrollStackItem } from "./components/ScrollStack";
+
 import "./App.css";
 
 export default function Home() {
+  // FEATURES (from set 2)
+  const features = [
+    {
+      icon: Brain,
+      title: "AI-Powered Summaries",
+      desc: "Condenses complex stories into quick, actionable insights you can digest in seconds.",
+      gradient: "linear-gradient(135deg, rgba(16,185,129,0.12), rgba(6,182,212,0.08))",
+      iconBg: "linear-gradient(135deg,#14b8a6,#06b6d4)",
+    },
+    {
+      icon: RefreshCw,
+      title: "Real-Time Updates",
+      desc: "Stay informed with live news feeds that update automatically without refreshing.",
+      gradient: "linear-gradient(135deg, rgba(6,182,212,0.12), rgba(59,130,246,0.06))",
+      iconBg: "linear-gradient(135deg,#06b6d4,#3b82f6)",
+    },
+    {
+      icon: Zap,
+      title: "Smart Personalization",
+      desc: "A news feed tailored intelligently to your habits, interests, and reading patterns.",
+      gradient: "linear-gradient(135deg, rgba(20,184,166,0.12), rgba(16,185,129,0.06))",
+      iconBg: "linear-gradient(135deg,#06b6d4,#10b981)",
+    },
+  ];
 
   // HOW IT WORKS STEPS
   const steps = [
-    {
-      num: "1",
-      title: "Set Your Interests",
-      desc: "Choose topics and sources you care about."
-    },
-    {
-      num: "2",
-      title: "AI Processes",
-      desc: "Our AI analyzes and summarizes the latest stories."
-    },
-    {
-      num: "3",
-      title: "Get Summaries",
-      desc: "Receive concise, actionable news instantly."
-    },
-    {
-      num: "4",
-      title: "Personalize",
-      desc: "Your feed learns and adapts to your preferences."
-    }
+    { num: "1", title: "Set Your Interests", desc: "Choose topics and sources you care about." },
+    { num: "2", title: "AI Processes", desc: "Our AI analyzes and summarizes the latest stories." },
+    { num: "3", title: "Get Summaries", desc: "Receive concise, actionable news instantly." },
+    { num: "4", title: "Personalize", desc: "Your feed learns and adapts to your preferences." }
   ];
+
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   return (
     <div className="app">
-
       {/* LIQUID BACKGROUND */}
       <div className="liquid-bg-wrapper">
         <LiquidEther
           colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
           mouseForce={20}
           cursorSize={70}
-          isViscous={false}
-          viscous={30}
-          iterationsViscous={32}
-          iterationsPoisson={32}
-          resolution={0.5}
-          isBounce={false}
           autoDemo={true}
           autoSpeed={0.5}
           autoIntensity={2.2}
-          takeoverDuration={0.25}
-          autoResumeDelay={2800}
-          autoRampDuration={0.6}
         />
       </div>
 
@@ -63,8 +70,8 @@ export default function Home() {
         </div>
 
         <div className="menu">
-          <button>Features</button>
-          <button>How it works</button>
+          <button onClick={() => scrollToSection("features")}>Features</button>
+          <button onClick={() => scrollToSection("how-it-works")}>How it Works</button>
         </div>
 
         <Link to="/login">
@@ -96,49 +103,41 @@ export default function Home() {
         </p>
       </div>
 
-      <div style={{ height: "25vh" }} />
+      <div style={{ height: "14vh" }} />
 
-      {/* FEATURES HEADING */}
-      <ScrollFloat
-        animationDuration={1.4}
-        ease="back.inOut(1.8)"
-        scrollStart="top 90%"
-        scrollEnd="bottom 65%"
-        stagger={0.1}
-      >
-        <h2 className="section-title">Features</h2>
-      </ScrollFloat>
+      {/* Features TITLE */}
+      <div className="features-header">
+        <h2 id="features" className="section-title">Features</h2>
+        <p className="section-subtitle">Powerful tools that enhance your news experience</p>
+      </div>
 
-      <div style={{ height: "20vh" }} />
+      {/* FEATURES GRID */}
+      <section className="features-section section-fade section-spaced">
+        <div className="features-grid">
+          {features.map((f, i) => {
+            const Icon = f.icon;
+            return (
+              <div key={i} className="feature-card">
+                <div className="feature-hover-bg" style={{ background: f.gradient }} />
 
-      {/* STACKING CARDS */}
-      <ScrollStack useWindowScroll={true}>
-        <ScrollStackItem>
-          <h2>AI-Powered Summaries</h2>
-          <p>Condenses complex stories into quick insights.</p>
-        </ScrollStackItem>
+                <div className="feature-icon-wrap" style={{ background: f.iconBg }}>
+                  <Icon className="feature-icon-svg" />
+                </div>
 
-        <ScrollStackItem>
-          <h2>Real-Time Updates</h2>
-          <p>Stay informed without refreshing manually.</p>
-        </ScrollStackItem>
+                <h3 className="feature-title">{f.title}</h3>
+                <p className="feature-desc">{f.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
-        <ScrollStackItem>
-          <h2>Smart Personalization</h2>
-          <p>A news feed tailored intelligently to your habits.</p>
-        </ScrollStackItem>
-      </ScrollStack>
-
-      <div style={{ height: "25vh" }} />
-
-      {/* HOW IT WORKS SECTION */}
-      <section className="how-it-works-section">
+      {/* HOW IT WORKS */}
+      <section className="how-it-works-section section-fade section-spaced">
         <div className="how-header">
-          <h2 className="section-title">How It Works</h2>
+          <h2 id="how-it-works" className="section-title">How It Works</h2>
           <p className="section-subtitle">Simple. Smart. Seamless.</p>
         </div>
-
-        <div style={{ height: "8vh" }} />
 
         <div className="steps-container">
           {steps.map((step, i) => (
@@ -146,16 +145,24 @@ export default function Home() {
               <div className="step-number">{step.num}</div>
               <h4 className="step-title">{step.title}</h4>
               <p className="step-desc">{step.desc}</p>
-
-              {/* Connectors between steps */}
-              {i < steps.length - 1 && <div className="step-connector"></div>}
             </div>
           ))}
         </div>
       </section>
 
-      <div style={{ height: "70vh" }} />
+      {/* CTA (kept as requested) */}
+      <section className="cta-section section-fade section-spaced">
+        <div>
+          <p className="cta-pill">Stay ahead</p>
+          <h3>Join ElevenSense and upgrade your daily briefing.</h3>
+          <p className="section-subtitle">
+            Personalized insights, lightning delivery, beautiful experience.
+          </p>
+        </div>
+        <Link to="/signup">
+          <button className="cta-button large">Create free account</button>
+        </Link>
+      </section>
     </div>
   );
 }
-
